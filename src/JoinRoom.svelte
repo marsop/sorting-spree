@@ -1,18 +1,52 @@
 <script>
-  export let onRoomCodeSelected;
+  export let params = {};
 
-  let roomCode = undefined;
+  import { supabase } from "./supabaseClient";
+  import { push } from "svelte-spa-router";
 
-  function joinRoom() {
-    console.log(`Room "${roomCode}" joined`);
-    onRoomCodeSelected(roomCode);
+  let roomCode = params?.roomCode ?? undefined;
+
+  let username = undefined;
+
+  async function tryJoinRoom() {
+    const { data, error } = await supabase
+      .from("Roommies")
+      .insert([{ room_code: roomCode, name: username }])
+      .select();
+
+    if (error) {
+      console.error("Error joining room:", error);
+    } else {
+      push(`/room/${roomCode}`);
+    }
   }
 </script>
 
 <div>
   <h1>Join Room</h1>
-  <input type="text" bind:value={roomCode} placeholder="Enter code" />
-  <button on:click={joinRoom}>Join</button>
+
+  {#if roomCode?.length !== 4}
+    <p style="color: red;">Room code must be exactly 4 characters long</p>
+  {/if}
+  <input
+    type="text"
+    bind:value={roomCode}
+    placeholder="Enter code"
+    on:input={(e) => (roomCode = e.target.value.toUpperCase())}
+  />
+
+  {#if username === undefined || username.trim() === ""}
+    <p style="color: red;">Username cannot be empty</p>
+  {/if}
+  <input type="text" bind:value={username} placeholder="Enter username" />
+
+  <button
+    on:click={tryJoinRoom}
+    disabled={!roomCode ||
+      roomCode.length !== 4 ||
+      !username ||
+      username.trim() === ""}>Join</button
+  >
 </div>
 
 <style>

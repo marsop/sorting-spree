@@ -1,6 +1,16 @@
 <script>
-    export let onCreateRoom;
-    export let onJoinRoom;
+    import { push, replace } from "svelte-spa-router";
+
+    function onCreateRoom() {
+        console.log("Creating room..");
+        replace('/create-room');
+    }
+
+    function onJoinRoom() {
+        console.log("Joining room..");
+        push('/join-room');
+    }
+
   </script>
   
   <div>
