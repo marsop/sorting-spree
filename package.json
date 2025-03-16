@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "vite build",
-    "deploy": "vite build && git add dist && git commit -m 'Deploy to GitHub Pages' && git subtree push --prefix dist origin gh-pages",
+    "deploy": "vite build && git switch gh-pages && git add dist && git commit -m 'Deploy' && git subtree push --prefix dist origin gh-pages",
     "dev": "vite",
     "preview": "vite preview",
     "serve": "ts-node-dev src/index.ts",
