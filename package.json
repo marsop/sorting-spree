@@ -3,13 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "vite build",
-    "deploy": "vite build && git switch gh-pages && git add dist && git commit -m 'Deploy' && git subtree push --prefix dist origin gh-pages",
     "dev": "vite",
+    "build": "vite build --base ./",
     "preview": "vite preview",
-    "serve": "ts-node-dev src/index.ts",
-    "start": "http-server -c-1 .",
-    "svelte": "rollup -c"
+    "deploy": "vite build --base ./ && git switch gh-pages && git add dist && git commit -m 'Deploy' && git subtree push --prefix dist origin gh-pages"
   },
   "keywords": [],
   "type": "module",
